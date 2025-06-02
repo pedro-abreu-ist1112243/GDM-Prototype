@@ -18,6 +18,7 @@ public class PortalMovement : MonoBehaviour
     private MoveableObject moveableObject;
     private Vector3 moveableObjectOffset;
     private bool isHandlingMoveableObject = false;
+    public bool canHandleMoveableObject = false;
 
     public bool isTelekinetic = true;
 
@@ -105,6 +106,22 @@ public class PortalMovement : MonoBehaviour
         {
             isGrounded = true;
         }
+
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            canHandleMoveableObject = true;
+        }
+        
+
+
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            canHandleMoveableObject = false;
+        }
     }
 
     void DetectMoveableObject()
@@ -140,7 +157,7 @@ public class PortalMovement : MonoBehaviour
             {
                 isHandlingMoveableObject = true;
             }
-            if (controls.Actions.HoldObject.ReadValue<float>() > 0 && isGrounded && moveableObject.GetIsMovable())
+            if (controls.Actions.HoldObject.ReadValue<float>() > 0 && canHandleMoveableObject && moveableObject.GetIsMovable())
             {
                 if (moveableObjectOffset == Vector3.zero)
                 {
