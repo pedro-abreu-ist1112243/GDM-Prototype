@@ -738,7 +738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMovable: 1
-  isKinematic: 1
+  isKinematic: 0
 --- !u!54 &247797957
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3897,7 +3897,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMovable: 1
-  isKinematic: 1
+  isKinematic: 0
 --- !u!54 &1264047162
 Rigidbody:
   m_ObjectHideFlags: 0
