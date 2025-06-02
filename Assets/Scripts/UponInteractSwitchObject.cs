@@ -16,6 +16,23 @@ public class UponInteractSwitchObject : MonoBehaviour
     private float timer = 0f;
     private bool timerActive = false;
 
+    private Controls controls;
+
+    void Awake()
+    {
+        controls = new Controls();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
+
     void Start()
     {
         if (objectToShow != null)
@@ -31,7 +48,7 @@ public class UponInteractSwitchObject : MonoBehaviour
         foreach (GameObject player in players)
         {
             float distance = Vector3.Distance(player.transform.position, transform.position);
-            if (distance <= interactRange && Input.GetKeyDown(KeyCode.E))
+            if (distance <= interactRange && controls.Actions.Interact.WasPressedThisFrame())
             {
                 isShowing = !isShowing;
                 if (objectToHide != null) objectToHide.SetActive(!isShowing);

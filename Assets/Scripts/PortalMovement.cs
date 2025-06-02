@@ -4,44 +4,64 @@ using UnityEngine;
 
 public class PortalMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f; // Speed for left and right movement
-    public float portalSpeed = 2f; // Speed for the portal transition
-    public float jumpForce = 5f; // Force applied for jumping
-    public Transform platformBelow; // Reference to the below platform
-    public Transform platformAbove; // Reference to the above platform
-    public float interactionRange = 1f; // Range to detect moveable objects
+    public float moveSpeed = 5f;
+    public float portalSpeed = 2f;
+    public float jumpForce = 5f;
+    public Transform platformBelow;
+    public Transform platformAbove;
+    public float interactionRange = 1f;
 
-    private bool isOnBelowPlatform = false; // Tracks which platform the object is on
-    private bool isPortaling = false; // Tracks if the object is currently portaling
-    private Vector3 targetPosition; // Target position for the portal transition
-    public bool isGrounded = true; // Tracks if the object is on the ground
-    private MoveableObject moveableObject; // Reference to the current moveable object
-    private Vector3 moveableObjectOffset; // Offset between the player and the moveable object
-    private bool isHandlingMoveableObject = false; // Tracks if the object is being moved
+    private bool isOnBelowPlatform = false;
+    private bool isPortaling = false;
+    private Vector3 targetPosition;
+    public bool isGrounded = true;
+    private MoveableObject moveableObject;
+    private Vector3 moveableObjectOffset;
+    private bool isHandlingMoveableObject = false;
 
     public bool isTelekinetic = true;
 
+    private Controls controls;
+
+    void Awake()
+    {
+        controls = new Controls();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
+
     void Update()
     {
-
         // Handle left and right movement
-        float horizontalInput = Input.GetAxis("Horizontal");
+        float horizontalInput = 0f;
+        if (controls.Actions.MoveLeft.ReadValue<float>() > 0)
+            horizontalInput -= 1f;
+        if (controls.Actions.MoveRight.ReadValue<float>() > 0)
+            horizontalInput += 1f;
         transform.Translate(Vector3.right * horizontalInput * moveSpeed * Time.deltaTime);
 
-        // Handle portal behavior when 'X' is pressed
-        if (Input.GetKeyDown(KeyCode.X) && !isPortaling && IsNearPortal())
+        // Handle portal behavior when 'EnterPortal' is pressed
+        if (controls.Actions.EnterPortal.WasPressedThisFrame() && !isPortaling && IsNearPortal())
         {
             StartPortalTransition();
         }
 
-        // Handle jumping when 'Space' is pressed
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        // Handle jumping when 'Jump' is pressed
+        if (controls.Actions.Jump.WasPressedThisFrame() && isGrounded)
         {
             Jump();
         }
 
         // Detect and handle moveable objects
-        if (!isHandlingMoveableObject){DetectMoveableObject();}
+        if (!isHandlingMoveableObject) { DetectMoveableObject(); }
         HandleMoveableObjects();
 
         // Smoothly move the object during the portal transition
@@ -49,7 +69,6 @@ public class PortalMovement : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, portalSpeed * Time.deltaTime);
 
-            // Check if the object has reached the target position
             if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
             {
                 isPortaling = false;
@@ -60,122 +79,107 @@ public class PortalMovement : MonoBehaviour
     void StartPortalTransition()
     {
         Vector3 currentPosition = transform.position;
-        float offset = 0.1f; // Small offset to prevent glitching
+        float offset = 0.1f;
 
         if (isOnBelowPlatform)
         {
-            // Move to the above platform, keeping the current X-axis position and adding an offset
             transform.position = new Vector3(currentPosition.x, platformAbove.position.y + offset, currentPosition.z);
         }
         else
         {
-            // Move to the below platform, keeping the current X-axis position and adding an offset
             transform.position = new Vector3(currentPosition.x, platformBelow.position.y + offset, currentPosition.z);
         }
 
-        // Toggle the platform state
         isOnBelowPlatform = !isOnBelowPlatform;
     }
 
     void Jump()
     {
-        // Apply a vertical force for jumping
         GetComponent<Rigidbody>().AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        isGrounded = false; // Set grounded to false after jumping
+        isGrounded = false;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Check if the object is grounded again
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Moveable_Object"))
         {
             isGrounded = true;
         }
-        
     }
 
     void DetectMoveableObject()
-{
-    // Perform a sphere overlap to detect moveable objects within range
-    Collider[] colliders = Physics.OverlapSphere(transform.position, interactionRange);
-
-    foreach (Collider collider in colliders)
     {
-        MoveableObject detectedObject = collider.GetComponent<MoveableObject>();
-        if (detectedObject != null)
-        {
-            moveableObject = detectedObject; // Set the detected object as the current moveable object
-            return;
-        }
-    }
+        Collider[] colliders = Physics.OverlapSphere(transform.position, interactionRange);
 
-    // If no moveable object is detected, clear the reference
-    moveableObject = null;
-}
+        foreach (Collider collider in colliders)
+        {
+            MoveableObject detectedObject = collider.GetComponent<MoveableObject>();
+            if (detectedObject != null)
+            {
+                moveableObject = detectedObject;
+                return;
+            }
+        }
+        moveableObject = null;
+    }
 
     void HandleMoveableObjects()
-{
-    if (!isTelekinetic) // Prevent moving objects if not telekinetic
+    {
+        if (!isTelekinetic)
             return;
-    
-    if (moveableObject != null)
-    {
-        // Check if the 'M' key is being held down
-        if (Input.GetKeyUp(KeyCode.M))
-        {
-            moveableObject.SetIsMovable(true);
-            isHandlingMoveableObject = false;
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            isHandlingMoveableObject = true;
-        }
-        if (Input.GetKey(KeyCode.M) && isGrounded && moveableObject.GetIsMovable())
-        {
-            // If the offset hasn't been calculated yet, calculate it
-            if (moveableObjectOffset == Vector3.zero)
-            {
-                moveableObjectOffset = moveableObject.transform.position - transform.position;
-            }
 
-            // Move the moveable object to maintain the offset relative to the player
-            if (moveableObject.IsTouchingObject()){
-                if(moveableObject.GetIsMovable())
+        if (moveableObject != null)
+        {
+            // Use HoldObject action (mapped to M) for telekinesis
+            if (controls.Actions.HoldObject.WasReleasedThisFrame())
+            {
+                moveableObject.SetIsMovable(true);
+                isHandlingMoveableObject = false;
+            }
+            if (controls.Actions.HoldObject.WasPressedThisFrame())
+            {
+                isHandlingMoveableObject = true;
+            }
+            if (controls.Actions.HoldObject.ReadValue<float>() > 0 && isGrounded && moveableObject.GetIsMovable())
+            {
+                if (moveableObjectOffset == Vector3.zero)
                 {
-                    moveableObject.transform.position = transform.position + 0.98f * moveableObjectOffset;
-                    moveableObject.SetIsMovable(false);
-                    return;
+                    moveableObjectOffset = moveableObject.transform.position - transform.position;
                 }
-                moveableObject.SetIsMovable(false);
-            }
 
-            if(moveableObject.GetIsMovable())
-            {
-                moveableObject.transform.position = transform.position + moveableObjectOffset;
+                if (moveableObject.IsTouchingObject())
+                {
+                    if (moveableObject.GetIsMovable())
+                    {
+                        moveableObject.transform.position = transform.position + 0.98f * moveableObjectOffset;
+                        moveableObject.SetIsMovable(false);
+                        return;
+                    }
+                    moveableObject.SetIsMovable(false);
+                }
+
+                if (moveableObject.GetIsMovable())
+                {
+                    moveableObject.transform.position = transform.position + moveableObjectOffset;
+                }
             }
-            
-            
-            
-            
-        }
-        else
-        {
-            // Reset the offset when the 'M' key is released
-            moveableObjectOffset = Vector3.zero;
-            
+            else
+            {
+                moveableObjectOffset = Vector3.zero;
+            }
         }
     }
-}
-bool IsNearPortal(float checkRange = 2f)
-{
-    Collider[] colliders = Physics.OverlapSphere(transform.position, checkRange);
-    foreach (Collider col in colliders)
+
+    bool IsNearPortal(float checkRange = 2f)
     {
-        if (col.CompareTag("Portal"))
+        Collider[] colliders = Physics.OverlapSphere(transform.position, checkRange);
+        foreach (Collider col in colliders)
         {
-            return true;
+            if (col.CompareTag("Portal"))
+            {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 }

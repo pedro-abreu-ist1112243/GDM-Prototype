@@ -16,6 +16,23 @@ public class UponInteractSpawnObject : MonoBehaviour
     private float timer = 0f;
     private bool timerActive = false;
 
+    private Controls controls;
+
+    void Awake()
+    {
+        controls = new Controls();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
+
     void Update()
     {
         if (spawnedObject == null)
@@ -24,7 +41,7 @@ public class UponInteractSpawnObject : MonoBehaviour
             foreach (GameObject player in players)
             {
                 float distance = Vector3.Distance(player.transform.position, transform.position);
-                if (distance <= interactRange && Input.GetKeyDown(KeyCode.E))
+                if (distance <= interactRange && controls.Actions.Interact.WasPressedThisFrame())
                 {
                     if (objectToSpawn != null)
                     {

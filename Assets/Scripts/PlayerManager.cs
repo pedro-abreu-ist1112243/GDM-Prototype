@@ -9,6 +9,23 @@ public class PlayerManager : MonoBehaviour
     private GameObject activePlayer;
     [SerializeField] private bool isTwoPlayerMode = false;
 
+    private Controls controls;
+
+    void Awake()
+    {
+        controls = new Controls();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
+
     void Start()
     {
         SetActivePlayer(player1);
@@ -21,7 +38,7 @@ public class PlayerManager : MonoBehaviour
 
         // Only allow switch if the active player is grounded
         PortalMovement activeMovement = activePlayer.GetComponent<PortalMovement>();
-        if (Input.GetKeyDown(KeyCode.P) && activeMovement != null && activeMovement.isGrounded)
+        if (controls.Actions.SwitchCharacter.WasPressedThisFrame() && activeMovement != null && activeMovement.isGrounded)
         {
             if (activePlayer == player1)
                 SetActivePlayer(player2);

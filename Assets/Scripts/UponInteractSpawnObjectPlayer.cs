@@ -11,6 +11,23 @@ public class UponInteractSpawnObjectPlayer : MonoBehaviour
     private bool hasSpawned = false;
     private GameObject spawnedPlayer; // Reference to the spawned player
 
+    private Controls controls;
+
+    void Awake()
+    {
+        controls = new Controls();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
+
     void Update()
     {
         if (hasSpawned) return;
@@ -19,7 +36,7 @@ public class UponInteractSpawnObjectPlayer : MonoBehaviour
         foreach (GameObject player in players)
         {
             float distance = Vector3.Distance(player.transform.position, transform.position);
-            if (distance <= interactRange && Input.GetKeyDown(KeyCode.E))
+            if (distance <= interactRange && controls.Actions.Interact.WasPressedThisFrame())
             {
                 if (objectToSpawn != null)
                 {

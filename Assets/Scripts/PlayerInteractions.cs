@@ -7,9 +7,27 @@ public class PlayerInteractions : MonoBehaviour
     public float checkRadius = 1.5f; // Radius to check for collectibles
     public List<string> inventory = new List<string>(); // Player's inventory
 
+    private Controls controls;
+
+    void Awake()
+    {
+        controls = new Controls();
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        // Use the new input system action for interaction (replace with your actual action name if different)
+        if (controls.Actions.Interact.WasPressedThisFrame())
         {
             TryCollectNearby();
             TryInteractWithInventoryChecker();
