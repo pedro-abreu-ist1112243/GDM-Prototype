@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PortalMovement : MonoBehaviour
 {
+    public PortalState portalState;
+
     public float moveSpeed = 5f;
     public float portalSpeed = 2f;
     public float jumpForce = 5f;
@@ -85,14 +87,17 @@ public class PortalMovement : MonoBehaviour
         if (isOnBelowPlatform)
         {
             transform.position = new Vector3(currentPosition.x, platformAbove.position.y + offset, currentPosition.z);
+            if (portalState != null) portalState.SetPortaled(true);
         }
         else
         {
             transform.position = new Vector3(currentPosition.x, platformBelow.position.y + offset, currentPosition.z);
+            if (portalState != null) portalState.SetPortaled(false);
         }
 
         isOnBelowPlatform = !isOnBelowPlatform;
     }
+
 
     void Jump()
     {
