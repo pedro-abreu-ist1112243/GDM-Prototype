@@ -25,11 +25,11 @@ public class pl_worck : MonoBehaviour
         // Determine yOffset based on portal state and isBottom flag
         if (!portalState.hasPortaled)
         {
-            yOffset = isBottom ? -21f : 1f;
+            yOffset = isBottom ? 1f : 24f;
         }
         else
         {
-            yOffset = isBottom ? 1f : 24f;
+            yOffset = isBottom ? -21f : 1f;
         }
 
         Vector3 currentPosition = transform.position;
