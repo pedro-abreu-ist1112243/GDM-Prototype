@@ -109,7 +109,15 @@ public class PortalMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Moveable_Object"))
         {
-            isGrounded = true;
+            // Only set isGrounded if the collision normal is mostly upwards
+            foreach (ContactPoint contact in collision.contacts)
+            {
+                if (contact.normal.y > 0.5f)
+                {
+                    isGrounded = true;
+                    break;
+                }
+            }
         }
 
         if (collision.gameObject.CompareTag("Ground"))
