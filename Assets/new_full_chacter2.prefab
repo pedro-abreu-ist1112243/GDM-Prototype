@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1495016480299770196}
   m_Layer: 0
-  m_Name: new_full_chacter
-  m_TagString: Untagged
+  m_Name: new_full_chacter2
+  m_TagString: Player2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185,13 +185,13 @@ MonoBehaviour:
   portalState: {fileID: 3094268652314537105}
   moveSpeed: 5
   portalSpeed: 2
-  jumpForce: 8
+  jumpForce: 10.5
   platformBelow: {fileID: 0}
   platformAbove: {fileID: 0}
   interactionRange: 2
   isGrounded: 1
   canHandleMoveableObject: 0
-  isTelekinetic: 1
+  isTelekinetic: 0
 --- !u!114 &3573570816964747559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +332,10 @@ PrefabInstance:
     - target: {fileID: 6796089828237820837, guid: 92537f63d9288344da5fe8572c810380, type: 3}
       propertyPath: m_Name
       value: cameras
+      objectReference: {fileID: 0}
+    - target: {fileID: 7729488014025757951, guid: 92537f63d9288344da5fe8572c810380, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6674191237227101766, guid: 92537f63d9288344da5fe8572c810380, type: 3}
