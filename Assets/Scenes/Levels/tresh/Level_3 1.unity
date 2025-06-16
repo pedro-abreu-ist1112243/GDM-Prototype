@@ -5152,7 +5152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 811974b75beede542856d23d5b76d69e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToSpawn: {fileID: 2461765195710833842, guid: 2f8c8b24c4f4de74cbdc31c8fe556e24, type: 3}
+  objectToSpawn: {fileID: 6505011307761329826, guid: ce5fd105dc6f05140abc0217271fb2ca, type: 3}
   interactRange: 2
   spawnOffset: {x: 3, y: -1, z: -5}
 --- !u!1 &739208806
@@ -8246,6 +8246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teleportTarget: {fileID: 210498189}
   interactRange: 1
+  portalState: {fileID: 0}
 --- !u!1 &1058600139
 GameObject:
   m_ObjectHideFlags: 0
@@ -9253,6 +9254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teleportTarget: {fileID: 1936226821}
   interactRange: 1
+  portalState: {fileID: 0}
 --- !u!1001 &1184940966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16707,7 +16709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &7505819459219240090
 Rigidbody:
   m_ObjectHideFlags: 0
