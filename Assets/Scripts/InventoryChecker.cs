@@ -37,6 +37,7 @@ public class InventoryChecker : MonoBehaviour
     // Call this function to check if all required items are in the player's inventory
     public bool HasItems(List<string> itemsToCheck)
     {
+        Debug.LogWarning("ITEMSSS");
         if (playerInteractions == null)
         {
             Debug.LogWarning("PlayerInteractions reference not set on InventoryChecker.");
