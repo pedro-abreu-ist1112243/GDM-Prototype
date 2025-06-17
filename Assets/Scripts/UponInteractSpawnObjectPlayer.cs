@@ -8,6 +8,11 @@ public class UponInteractSpawnObjectPlayer : MonoBehaviour
     [SerializeField] private float interactRange = 2f; // Range to interact
     [SerializeField] private Vector3 spawnOffset = Vector3.zero; // Optional offset from this object's position
 
+    [SerializeField] private MessageDisplayer messageDisplayer;
+
+    private string message = "Press Q to switch charcaters";
+    private bool hasTriggered = false;
+
     private bool hasSpawned = false;
     private GameObject spawnedPlayer; // Reference to the spawned player
 
@@ -43,6 +48,8 @@ public class UponInteractSpawnObjectPlayer : MonoBehaviour
                     spawnedPlayer = Instantiate(objectToSpawn, transform.position + spawnOffset, Quaternion.identity);
                     hasSpawned = true;
 
+                    ShowMessage();
+
                     // Find PlayerManager and set player2
                     PlayerManager pm = FindObjectOfType<PlayerManager>();
                     if (pm != null)
@@ -54,5 +61,13 @@ public class UponInteractSpawnObjectPlayer : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void ShowMessage()
+    {
+        if (hasTriggered) return;
+
+        messageDisplayer.ShowMessage(message);
+        hasTriggered = true;
     }
 }
