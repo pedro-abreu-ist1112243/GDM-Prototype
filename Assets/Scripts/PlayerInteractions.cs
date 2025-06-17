@@ -63,23 +63,35 @@ public class PlayerInteractions : MonoBehaviour
 
     // Scans nearby for an object with the tag "InventoryChecker" and calls its PlayerInteract() method
     public void TryInteractWithInventoryChecker()
+{
+    Collider[] colliders = Physics.OverlapSphere(transform.position, checkRadius);
+    Debug.Log($"[PlayerInteractions] Checking for InventoryChecker within radius {checkRadius}...");
+    foreach (Collider col in colliders)
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, checkRadius);
-        foreach (Collider col in colliders)
+        Debug.Log($"[PlayerInteractions] Found collider: {col.name} (tag: {col.tag})");
+        if (col.CompareTag("InventoryChecker"))
         {
-            if (col.CompareTag("InventoryChecker"))
+            Debug.Log("[PlayerInteractions] InventoryChecker found! Attempting to interact...");
+            var checker = col.GetComponent<MonoBehaviour>();
+            if (checker != null)
             {
-                var checker = col.GetComponent<MonoBehaviour>();
-                if (checker != null)
+                var method = checker.GetType().GetMethod("PlayerInteract");
+                if (method != null)
                 {
-                    var method = checker.GetType().GetMethod("PlayerInteract");
-                    if (method != null)
-                    {
-                        method.Invoke(checker, null);
-                    }
+                    Debug.Log("[PlayerInteractions] Calling PlayerInteract on InventoryChecker.");
+                    method.Invoke(checker, null);
                 }
-                break; // Only interact with the first InventoryChecker found
+                else
+                {
+                    Debug.LogWarning("[PlayerInteractions] No PlayerInteract method found on InventoryChecker.");
+                }
             }
+            else
+            {
+                Debug.LogWarning("[PlayerInteractions] No MonoBehaviour found on InventoryChecker collider.");
+            }
+            break; // Only interact with the first InventoryChecker found
         }
     }
+}
 }

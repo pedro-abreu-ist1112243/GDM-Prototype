@@ -46,6 +46,7 @@ public class CyclingObject : MonoBehaviour
     if (other.CompareTag("Player"))
     {
         Debug.Log("Player caught! Resetting scene.");
+        GameLogger.Log(other.transform.position, "Player died during stealth segment");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
