@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8064989952504817262}
   m_Layer: 0
-  m_Name: new_full_chacter_22_true
+  m_Name: new_full_chacter_22_true 1
   m_TagString: Player 2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132,7 +132,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7087313581561331729
 Transform:
   m_ObjectHideFlags: 0
