@@ -36,6 +36,7 @@ public class Lightbulb : MonoBehaviour
     // Call this to make the lightbulb disappear and return the message
     public string Disappear()
     {
+        GameLogger.Log(transform.position,"Interacted with " +  disappearMessage);
         gameObject.SetActive(false);
         return disappearMessage;
     }

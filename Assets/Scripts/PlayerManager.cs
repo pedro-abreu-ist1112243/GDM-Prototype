@@ -119,10 +119,16 @@ public class PlayerManager : MonoBehaviour
 
     void SwitchCharacter()
     {
-        if (activePlayer == player1)
+        if (activePlayer == player1) {
             SetActivePlayer(player2);
+            GameLogger.Log(player1.transform.position, "Swicthed to character 2");
+        }
         else
+        {
             SetActivePlayer(player1);
+            GameLogger.Log(player2.transform.position, "Swicthed to character 1");
+        }
+            
     }
 
     void SetActivePlayer(GameObject player)

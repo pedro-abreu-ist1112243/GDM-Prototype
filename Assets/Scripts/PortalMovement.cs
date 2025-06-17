@@ -54,6 +54,7 @@ public class PortalMovement : MonoBehaviour
         // Handle portal behavior when 'EnterPortal' is pressed
         if (controls.Actions.EnterPortal.WasPressedThisFrame() && !isPortaling && IsNearPortal())
         {
+            GameLogger.Log(transform.position, "Used portal to switch dimension");
             StartPortalTransition();
         }
 

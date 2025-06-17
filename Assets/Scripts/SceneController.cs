@@ -26,9 +26,12 @@ public class SceneController : MonoBehaviour
 
         if (nextIndex < SceneManager.sceneCountInBuildSettings)
         {
+            Vector3 playerPos = FindPlayerPosition();
+            GameLogger.Log(playerPos, $"Loading next level: {SceneManager.GetSceneByBuildIndex(nextIndex).name}");
             SceneManager.LoadSceneAsync(nextIndex);
         }
     }
+
 
     public void PreviousLevel()
     {
@@ -39,4 +42,11 @@ public class SceneController : MonoBehaviour
             SceneManager.LoadSceneAsync(prevIndex);
         }
     }
+
+    private Vector3 FindPlayerPosition()
+    {
+        GameObject player = GameObject.FindWithTag("Player");
+        return player != null ? player.transform.position : Vector3.zero;
+    }
+
 }

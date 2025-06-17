@@ -32,6 +32,8 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
+        Vector3 player = FindPlayerPosition();
+        GameLogger.Log(player, "Game paused");
     }
 
     public void ResumeGame()
@@ -39,10 +41,18 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
+        Vector3 player = FindPlayerPosition();
+        GameLogger.Log(player, "Game resumed");
     }
 
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    private Vector3 FindPlayerPosition()
+    {
+        GameObject player = GameObject.FindWithTag("Player");
+        return player != null ? player.transform.position : Vector3.zero;
     }
 }
