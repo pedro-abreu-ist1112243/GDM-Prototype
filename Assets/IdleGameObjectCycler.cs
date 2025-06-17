@@ -18,7 +18,7 @@ public class IdleGameObjectCycler : MonoBehaviour
         // Make sure we have exactly 5 game objects
         if (idleGameObjects.Length != 5)
         {
-            Debug.LogWarning("Please assign exactly 5 GameObjects to the idle array!");
+            //Debug.LogWarning("Please assign exactly 5 GameObjects to the idle array!");
             return;
         }
 
@@ -85,7 +85,7 @@ public class IdleGameObjectCycler : MonoBehaviour
                 idleGameObjects[currentIdleIndex].SetActive(true);
             }
 
-            Debug.Log("Started idle cycling");
+            //Debug.Log("Started idle cycling");
         }
     }
 
@@ -95,14 +95,14 @@ public class IdleGameObjectCycler : MonoBehaviour
         {
             isIdleCycling = false;
             DeactivateAllIdleObjects();
-            Debug.Log("Stopped idle cycling");
+            //Debug.Log("Stopped idle cycling");
         }
     }
 
     public void PauseIdleCycling()
     {
         isIdleCycling = false;
-        Debug.Log("Paused idle cycling");
+        //Debug.Log("Paused idle cycling");
     }
 
     public void ResumeIdleCycling()
@@ -111,7 +111,7 @@ public class IdleGameObjectCycler : MonoBehaviour
         {
             isIdleCycling = true;
             lastIdleCycleTime = Time.time;
-            Debug.Log("Resumed idle cycling");
+            //Debug.Log("Resumed idle cycling");
         }
     }
 
@@ -132,7 +132,7 @@ public class IdleGameObjectCycler : MonoBehaviour
             idleGameObjects[currentIdleIndex].SetActive(true);
         }
 
-        Debug.Log($"Idle: Activated GameObject {currentIdleIndex + 1}");
+        //Debug.Log($"Idle: Activated GameObject {currentIdleIndex + 1}");
     }
 
     void DeactivateAllIdleObjects()
@@ -150,7 +150,7 @@ public class IdleGameObjectCycler : MonoBehaviour
     public void SetIdleCycleDelay(float newDelay)
     {
         idleCycleDelay = Mathf.Max(0.1f, newDelay); // Minimum 0.1 seconds
-        Debug.Log($"Idle cycle delay set to {idleCycleDelay} seconds");
+        //Debug.Log($"Idle cycle delay set to {idleCycleDelay} seconds");
     }
 
     // Public method to get current cycling state
