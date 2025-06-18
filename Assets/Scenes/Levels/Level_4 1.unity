@@ -8016,6 +8016,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9142613313089140493, guid: ce5fd105dc6f05140abc0217271fb2ca, type: 3}
+      propertyPath: isTelekinetic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9193263760028076471, guid: ce5fd105dc6f05140abc0217271fb2ca, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
