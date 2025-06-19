@@ -32,6 +32,9 @@ public static class GameLogger
         {
             Debug.LogError("Logger initialization error: " + e.Message);
         }
+
+        Debug.Log("Log file saved at: " + Path.Combine(Application.persistentDataPath, "Logs"));
+
     }
 
     public static void Log(Vector3 playerPosition, string description)

@@ -17,6 +17,7 @@ public class DoorConditional : MonoBehaviour
     {
         if (isUnlocked && other.CompareTag("Player") && !string.IsNullOrEmpty(sceneToLoad))
         {
+            GameLogger.Log(transform.position, $"Loading next level: ");
             SceneManager.LoadScene(sceneToLoad);
         }
     }
